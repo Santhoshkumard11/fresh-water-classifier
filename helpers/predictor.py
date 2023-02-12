@@ -66,7 +66,12 @@ class Predictor:
         return json.dumps(final_output)
 
     def model_describe(self):
-        pass
+        final_output = {}
+
+        for key, value in zip(model.feature_names_in_.tolist(), model.feature_importances_.tolist()):
+            final_output.update({key: value})
+
+        return json.dumps({"feature_importance":final_output})
 
     def predict(self):
         """Make predictions by loading the image into the session
