@@ -1,19 +1,26 @@
 import logging
 import pandas as pd
+import joblib
+import json
+import os
 
 from helpers.utils import get_model_attributes
 
-import joblib
-import json
 
-MODEL_PATH = "models/96_90_random_forest_nor_10k.sav"
+_LATEST_MODEL_VERSION = os.environ.get("LATEST_MODEL_VERSION")
+
+MODEL_V1_PATH = "models/96_90_random_forest_nor_10k.sav"
+MODEL_V2_PATH = "models/96_90_random_forest_nor_10k.sav"
+# MODEL_V2_PATH = "models/99_random_forest_nor_10k.sav"
+# MODEL_V2_PATH = "models/xgboost.model"
 
 
 # load the model and get the model running for prediction
-model = joblib.load(MODEL_PATH)
+MODEL_V1 = joblib.load(MODEL_V1_PATH)
+MODEL_V2 = joblib.load(MODEL_V2_PATH)
 
 # label reference
-classifier_classes_dict = {0: "safe to consume", 1: "unsafe to consume"}
+CLASSIFIER_CLASSES_MAPPING_DICT = {0: "safe to consume", 1: "unsafe to consume"}
 
 
 class Predictor:
@@ -29,9 +36,17 @@ class Predictor:
             "get_model_features", False
         ), req_body.get("get_feature_importance", False)
 
+        self.model_version = (
+            _LATEST_MODEL_VERSION
+            if self.model_version == "latest"
+            else self.model_version
+        )
+
         self.model_attributes = get_model_attributes(self.model_version)
 
         self.predict_df = None
+
+        self.model = MODEL_V1 if self.model_version == "v1" else MODEL_V2
 
     def preprocess_feature_list(self):
         for key, value in self.features_dict.items():
@@ -42,25 +57,29 @@ class Predictor:
     def construct_final_output(self, predicted_class: int):
         final_output = {}
 
-        raw_prediction = classifier_classes_dict.get(int(predicted_class), "error")
+        raw_prediction = CLASSIFIER_CLASSES_MAPPING_DICT.get(
+            int(predicted_class), "error"
+        )
 
         final_output.update(
-            {"prediction": raw_prediction, "prediction_class": predicted_class}
+            {"prediction": raw_prediction, "predicted_class": predicted_class}
         )
 
         if self.flag_probability:
-            probability = model.predict_proba(self.predict_df).tolist()[0]
+            probability = self.model.predict_proba(self.predict_df).tolist()[0]
 
             final_output.update(
                 {"probability": {"0": probability[0], "1": probability[1]}}
             )
 
         if self.flag_model_features:
-            final_output.update({"feature_columns": model.feature_names_in_.tolist()})
+            final_output.update(
+                {"feature_columns": self.model.feature_names_in_.tolist()}
+            )
 
         if self.flag_feature_importance:
             final_output.update(
-                {"feature_importance": model.feature_importances_.tolist()}
+                {"feature_importance": self.model.feature_importances_.tolist()}
             )
 
         return json.dumps(final_output)
@@ -68,10 +87,13 @@ class Predictor:
     def model_describe(self):
         final_output = {}
 
-        for key, value in zip(model.feature_names_in_.tolist(), model.feature_importances_.tolist()):
+        for key, value in zip(
+            self.model.feature_names_in_.tolist(),
+            self.model.feature_importances_.tolist(),
+        ):
             final_output.update({key: value})
 
-        return json.dumps({"feature_importance":final_output})
+        return json.dumps({"feature_importance": final_output})
 
     def predict(self):
         """Make predictions by loading the image into the session
@@ -87,7 +109,7 @@ class Predictor:
 
             self.preprocess_feature_list()
 
-            predict_output = model.predict(self.predict_df)
+            predict_output = self.model.predict(self.predict_df)
 
             predicted_class = predict_output.tolist()[0]
 
