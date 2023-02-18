@@ -11,7 +11,7 @@ def add_time_to_response(response, end_time):
 
     string_io = StringIO((response))
     response_json = json.load(string_io)
-    response_json.update({"response_time": end_time})
+    response_json.update({"response_time": end_time, "log_source": "azure"})
     return json.dumps(response_json)
 
 

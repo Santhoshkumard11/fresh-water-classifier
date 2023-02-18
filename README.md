@@ -54,6 +54,12 @@ Defaults to false
 If set to true, returns the feature columns the model was trained on<br>
 Defaults to false
 
+7) `skip_db_update` (bool, optional)
+
+If set to true, skips the prediction update to db and make the response time faster
+
+```NOTE: The response time recorded is the time when the request first hits the Azure Function endpoint and the prediction is made```
+
 ## Request headers
 
 `Content-Type` (required) string  
@@ -71,9 +77,9 @@ Sample request body for prediction:
     "features_dict": {
         "pH": "0.916054662638588",
         "Iron": "0.61964963700558",
-        "Nitrate": 1.389334381478444,
-        "Chloride": 84.5131075606675,
-        "Lead": 0.337545563272474,
+        "Nitrate": "0.0",
+        "Chloride": "0.0",
+        "Lead": "0",
         "Zinc": "0.9780321533559888",
         "Turbidity": "0.2486518821452759",
         "Fluoride": "0.6913182398790103",
@@ -88,7 +94,8 @@ Sample request body for prediction:
     "mode": "predict",
     "get_probability": true,
     "get_feature_importance": true,
-    "get_model_features": true
+    "get_model_features": true,
+    "skip_db_update": true
 }
 ```
 
