@@ -56,3 +56,35 @@ model_attributes = {
         ],
     },
 }
+
+
+_ML_LOG_QUERY_ARGS_MAPPING = {
+    "model_version": ["req_body", "model_version"],
+    "features_dict": ["req_body", "features_dict"],
+    "predicted_class": ["response", "predicted_class"],
+    "response_time": ["response", "response_time"],
+    "_mode": ["req_body", "mode"],
+    "get_probability": ["req_body", "get_probability"],
+    "get_feature_importance": ["req_body", "get_feature_importance"],
+    "get_model_features": ["req_body", "get_model_features"],
+    "status_code": ["response", "status_code"],
+}
+
+_MISCLASSIFIED_QUERY_ARGS_MAPPING = {
+    "model_version": ["req_body", "model_version"],
+    "features_dict": ["req_body", "features_dict"],
+    "response_time": ["response", "response_time"],
+    "_mode": ["req_body", "mode"],
+    "get_probability": ["req_body", "get_probability"],
+    "get_feature_importance": ["req_body", "get_feature_importance"],
+    "get_model_features": ["req_body", "get_model_features"],
+    "status_code": ["response", "status_code"],
+}
+
+_QUERY_CONSTRUCT_HELPER = {
+    "ml_model_logs": {"table_name": "fresh_water_classifier", "database_name": "ml_model_logs", "column_names": "model_version,features_dict,predicted_class,response_time,_mode,get_probability,get_feature_importance,get_model_features,status_code"},
+    "misclassified": {"table_name": "misclassified", "database_name": "retrain_model", "column_names": "original_class,predicted_class,features_dict,model_version,response_time"},
+}
+
+
+_INSERT_QUERY_TEMPLATE = """INSERT INTO {database_name}.{table_name} ({column_names})  values ({column_values})"""

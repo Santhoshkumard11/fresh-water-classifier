@@ -4,12 +4,15 @@ This repo contains code that runs on Azure Function to do on-demand predictions 
 
 There are two ways to use this API,
 1) Directly use it on a Pandas DataFrame
-2) Access using the API endpoint
+2) Access directly using the API endpoint (via Postman)
+
 
 ## 1) Using with Pandas DataFrame
 
 
 ## 2) Azure Functions API endpoints
+
+Download the Postman collection which has sample API endpoints and JSON request body
 
 Request URL - https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net
 
