@@ -1,29 +1,36 @@
 import logging
 import pandas as pd
 import joblib
-import json
-import os
+import numpy as np
 
 from helpers.utils import get_model_attributes
 
+# from sklearnex import patch_sklearn
+# patch_sklearn()
 
-_LATEST_MODEL_VERSION = os.environ.get("LATEST_MODEL_VERSION")
+BASE_MODEL_PATH = "models"
 
-MODEL_V1_PATH = "models/96_90_random_forest_nor_10k.sav"
-MODEL_V2_PATH = "models/96_90_random_forest_nor_10k.sav"
-# MODEL_V2_PATH = "models/99_random_forest_nor_10k.sav"
-# MODEL_V2_PATH = "models/xgboost.model"
+# Download all the models and store it in cache when the function starts
+MODEL_V1_PATH = f"{BASE_MODEL_PATH}/rf_v1.1.sav"
 
+MODEL_V2_PATH = f"{BASE_MODEL_PATH}/rf_v2.0.sav"
+
+MODEL_V3_PATH = f"{BASE_MODEL_PATH}/rf_v3.1.sav"
 
 # load the model and get the model running for prediction
 MODEL_V1 = joblib.load(MODEL_V1_PATH)
 MODEL_V2 = joblib.load(MODEL_V2_PATH)
+MODEL_V3 = joblib.load(MODEL_V3_PATH)
+
+logging.info("Models loaded successfully! Ready for predictions")
 
 # label reference
 CLASSIFIER_CLASSES_MAPPING_DICT = {0: "safe to consume", 1: "unsafe to consume"}
 
 
 class Predictor:
+    "Class that makes the prediction and other ML model operations"
+
     def __init__(self, features_dict: dict, req_body={}) -> None:
         self.features_dict = features_dict
         self.req_body = req_body
@@ -36,25 +43,88 @@ class Predictor:
             "get_model_features", False
         ), req_body.get("get_feature_importance", False)
 
-        self.model_version = (
-            _LATEST_MODEL_VERSION
-            if self.model_version == "latest"
-            else self.model_version
-        )
-
         self.model_attributes = get_model_attributes(self.model_version)
 
-        self.predict_df = None
+        self.model_version = self.model_attributes["model_version"]
 
-        self.model = MODEL_V1 if self.model_version == "v1" else MODEL_V2
+        logging.info(f"Using model version - {self.model_version}")
+
+        self.predict_df = pd.DataFrame()
+
+        # switch between different versions of the model
+        if self.model_version == "v1.1":
+            self.model = MODEL_V1
+        elif self.model_version == "v2.0":
+            self.model = MODEL_V2
+        elif self.model_version == "v3.1":
+            self.model = MODEL_V3
+
+    def add_missed_out_columns(self):
+        """Add the feature columns created by pandas dummies method"""
+
+        model_features_list = self.model_attributes["features_list"]
+
+        df_column_names = self.predict_df.columns.to_list()
+
+        # iterate through the models features
+        for column_name in model_features_list:
+            if column_name not in df_column_names:
+                self.predict_df[column_name] = [0]
 
     def preprocess_feature_list(self):
+        """Place where we create dummies for feature columns and do the extensive preprocessing"""
+
         for key, value in self.features_dict.items():
-            self.features_dict.update({key: float(value)})
+            # skip categorical feature columns
+            if key not in ["Color", "Month", "Source"]:
+                self.features_dict.update({key: float(value)})
 
         self.predict_df = pd.DataFrame(self.features_dict, index=[0])
 
-    def construct_final_output(self, predicted_class: int):
+        if self.model_version == "v2.0":
+            self.predict_df = pd.get_dummies(
+                self.predict_df, prefix=["clr", "src"], columns=["Color", "Source"]
+            ).drop(columns=["Month"])
+            self.add_missed_out_columns()
+            numerical_columns_to_fill_median = list(
+                self.predict_df._get_numeric_data().columns
+            )
+
+            for column_name in numerical_columns_to_fill_median:
+                column_median = self.predict_df[column_name].median()
+                self.predict_df[column_name] = (
+                    self.predict_df[column_name]
+                    .replace(np.NaN, column_median)
+                    .round(10)
+                )
+
+        if self.model_version == "v3.1":
+            self.predict_df = pd.get_dummies(
+                self.predict_df, prefix=["clr"], columns=["Color"]
+            ).drop(columns=["Month", "Source"])
+            self.add_missed_out_columns()
+            numerical_columns_to_fill_median = list(
+                self.predict_df._get_numeric_data().columns
+            )
+
+            for column_name in numerical_columns_to_fill_median:
+                column_median = self.predict_df[column_name].median()
+                self.predict_df[column_name] = (
+                    self.predict_df[column_name]
+                    .replace(np.NaN, column_median)
+                    .round(10)
+                )
+
+    def construct_final_output(self, predicted_class: int) -> dict:
+        """Construct the final output to be sent to user
+
+        Args:
+            predicted_class (int): the predicted class
+
+        Returns:
+            dict: final response dict
+        """
+
         final_output = {}
 
         raw_prediction = CLASSIFIER_CLASSES_MAPPING_DICT.get(
@@ -82,9 +152,15 @@ class Predictor:
                 {"feature_importance": self.model.feature_importances_.tolist()}
             )
 
-        return json.dumps(final_output)
+        return final_output
 
     def model_describe(self):
+        """Construct the model describe dict
+
+        Returns:
+            dict: model describe dict
+        """
+
         final_output = {}
 
         for key, value in zip(
@@ -93,7 +169,7 @@ class Predictor:
         ):
             final_output.update({key: value})
 
-        return json.dumps({"feature_importance": final_output})
+        return {"feature_importance": final_output}
 
     def predict(self):
         """Make predictions by loading the image into the session

@@ -1,0 +1,12 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "myblob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "fresh-water-dataset",
+      "connection": "santhoshinteloneapi942f_STORAGE"
+    }
+  ]
+}

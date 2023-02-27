@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "2b0c7213-4405-41a2-aee1-fa1a5e2f62e3",
+		"name": "Santhosh - Intel oneAPI Hackathon 2023",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10339121"
+	},
+	"item": [
+		{
+			"name": "model v1 testing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"features_dict\": {\r\n        \"pH\": \"0.916054662638588\",\r\n        \"Iron\": \"0.61964963700558\",\r\n        \"Nitrate\": \"1.389334381478444\",\r\n        \"Chloride\": \"84.5131075606675\",\r\n        \"Lead\": \"3.337545563272474\",\r\n        \"Zinc\": \"1.9780321533559888\",\r\n        \"Turbidity\": \"0.2486518821452759\",\r\n        \"Fluoride\": \"0.6913182398790103\",\r\n        \"Copper\": \"0.96396750718677\",\r\n        \"Odor\": \"0.7721724045887509\",\r\n        \"Sulfate\": \"0.81345037627716\",\r\n        \"Chlorine\": \"0.966623674745241\",\r\n        \"Manganese\": \"0.011527500694864\",\r\n        \"Total Dissolved Solids\": \"0.36944624557778\"\r\n    },\r\n    \"model_version\": \"v1.1\",\r\n    \"mode\": \"predict\",\r\n    \"get_probability\": true,\r\n    \"get_feature_importance\": true,\r\n    \"get_model_features\": true,\r\n    \"skip_db_update\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"host": [
+						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+					],
+					"path": [
+						"api",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "model v2 testing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"features_dict\": {\r\n        \"pH\": 5.916054662638588,\r\n        \"Iron\": 2.61964963700558,\r\n        \"Nitrate\": 1.389334381478444,\r\n        \"Chloride\": 84.5131075606675,\r\n        \"Lead\": 3.337545563272474,\r\n        \"Zinc\": 1.9780321533559888,\r\n        \"Turbidity\": 0.2486518821452759,\r\n        \"Fluoride\": 1.6913182398790103,\r\n        \"Copper\": 2.96396750718677,\r\n        \"Odor\": 0.7721724045887509,\r\n        \"Sulfate\": 83.81345037627716,\r\n        \"Conductivity\": 150.0865646653724,\r\n        \"Chlorine\": 5.966623674745241,\r\n        \"Manganese\": 0.011527500694864,\r\n        \"Total Dissolved Solids\": 52.36944624557778,\r\n        \"Water Temperature\": 10.404331788327024,\r\n        \"Air Temperature\": 42.50801106306919,\r\n        \"Day\": 12.0,\r\n        \"Time of Day\": 23.0,\r\n        \"Color\": \"Faint Yellow\",\r\n        \"Source\": \"Spring\",\r\n        \"Month\": \"January\"\r\n    },\r\n    \"model_version\": \"v2.0\",\r\n    \"mode\": \"predict\",\r\n    \"get_probability\": true,\r\n    \"get_feature_importance\": true,\r\n    \"get_model_features\": true,\r\n    \"skip_db_update\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"host": [
+						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+					],
+					"path": [
+						"api",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "model v3 testing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"features_dict\": {\r\n        \"pH\": 5.916054662638588,\r\n        \"Iron\": 2.61964963700558,\r\n        \"Nitrate\": 1.389334381478444,\r\n        \"Chloride\": 84.5131075606675,\r\n        \"Lead\": 3.337545563272474,\r\n        \"Zinc\": 1.9780321533559888,\r\n        \"Turbidity\": 0.2486518821452759,\r\n        \"Fluoride\": 1.6913182398790103,\r\n        \"Copper\": 2.96396750718677,\r\n        \"Odor\": 0.7721724045887509,\r\n        \"Sulfate\": 83.81345037627716,\r\n        \"Conductivity\": 150.0865646653724,\r\n        \"Chlorine\": 5.966623674745241,\r\n        \"Manganese\": 0.011527500694864,\r\n        \"Total Dissolved Solids\": 52.36944624557778,\r\n        \"Water Temperature\": 10.404331788327024,\r\n        \"Air Temperature\": 42.50801106306919,\r\n        \"Day\": 12.0,\r\n        \"Time of Day\": 23.0,\r\n        \"Color\": \"Faint Yellow\",\r\n        \"Source\": \"Spring\",\r\n        \"Month\": \"January\"\r\n    },\r\n    \"model_version\": \"v3.1\",\r\n    \"mode\": \"predict\",\r\n    \"get_probability\": true,\r\n    \"get_feature_importance\": true,\r\n    \"get_model_features\": true,\r\n    \"skip_db_update\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"host": [
+						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+					],
+					"path": [
+						"api",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "model -feature error",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model_version\": \"v3.1\",\r\n    \"mode\": \"predict\",\r\n    \"get_probability\": true,\r\n    \"get_feature_importance\": true,\r\n    \"get_model_features\": true,\r\n    \"skip_db_update\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"host": [
+						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+					],
+					"path": [
+						"api",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "model describe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model_version\": \"v3.1\",\r\n    \"mode\": \"model_describe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"host": [
+						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+					],
+					"path": [
+						"api",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

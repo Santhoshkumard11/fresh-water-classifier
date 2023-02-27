@@ -1,20 +1,39 @@
-# Sandy Inspires - Fresh Water Classifier - Intel oneAPI Hackathon
+# Sandy Inspires - Predict the quality of water - Intel oneAPI Hackathon 2023
 
-This repo contains code that runs on Azure Function to do on-demand predictions at scale.
+Deploying a binary classification model on Azure Function to do on-demand predictions at scale powered by Intel oneAPI AI Analytics Toolkit. We have multiple versions of the model with varying f1 scores - the latest model has 94 as it's f1 score. Integrated GitHub actions with GitHub repo to make seamless deployment of new code into Azure Function by simply pushing code to main brach or merging code with main branch. It's also important to understand how our model is performing so we are logging the model metrics in a MySQL database for further analytics, gathering deeper insights to improve the model, and analyze model usage.
 
-There are two ways to use this API,
-1) Directly use it on a Pandas DataFrame
-2) Access directly using the API endpoint (via Postman)
+`Project Published on DevMesh Portal` - [Project Link](https://devmesh.intel.com/projects/fresh-water-classification-using-intel-oneapi-ai-analtyics-toolkit-sandy-inspires)
+
+## Architecture Diagram
+![Architecture Diagram](./images/architecture_diagram.png)
+
+## YouTube Demo Video 📺📺
+### [Click here to watch the demo](https://www.youtube.com/watch?v=hG8o02FAzAY&ab_channel=LateNightCodewithSanthosh)
+
+### Step to import the Postman collection
+- Open your Postman application
+- Press Ctrl+O or got to File> Import
+- Select the JSON file and choose the collection name to complete the import
+
+[Click here to read more about importing a Postman collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman)
 
 
-## 1) Using with Pandas DataFrame
+## Azure Functions API endpoints
 
+Download the Postman API Collection which has sample API endpoints and JSON request body
 
-## 2) Azure Functions API endpoints
+Base Request URL - https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net
 
-Download the Postman collection which has sample API endpoints and JSON request body
+Sample request URLs
+- https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict
 
-Request URL - https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net
+`Note: The first time you try to access this endpoint it might be slow but once it loads up then you can hit the endpoint frequently and get a quick response (300 to 750 ms)`
+
+## System Specifications
+- 16 GB DDR4
+- Intel i7-8750H @ 2.20 GHz with 6 cores
+- Nvidia GeForce GTX 1060 with 6 GB VRAM
+- Samsung 256 GB SSD M.2 NVME
 
 ## Http Method
 
@@ -54,6 +73,12 @@ Defaults to false
 If set to true, returns the feature columns the model was trained on<br>
 Defaults to false
 
+7) `skip_db_update` (bool, optional)
+
+If set to true, skips the prediction update to db and make the response time faster
+
+```NOTE: The response time recorded is the time when the request first hits the Azure Function endpoint and the prediction is made```
+
 ## Request headers
 
 `Content-Type` (required) string  
@@ -62,6 +87,14 @@ Media type of the body sent to the API. (application/json)
 
 `NOTE: it's an public API endpoint so no authentication required. Never run public public endpoints in production`
 
+## Setup environment variable (incase you want to deploy this code)
+#### Please set the below variables
+- MYSQL_HOST - MySQL host name
+- MYSQL_USERNAME - MySQL username
+- MYSQL_PASSWORD - MySQL user password
+- LATEST_MODEL_VERSION - the latest version of the model (v1.1, v2.0, v3.1)
+- AZURE_BLOB_STORAGE_MODEL_CONTAINER_PATH - the private url of the Azure Blob Storage Container
+
 ## Request Sample
 
 Sample request body for prediction:
@@ -69,26 +102,35 @@ Sample request body for prediction:
 ```
 {
     "features_dict": {
-        "pH": "0.916054662638588",
-        "Iron": "0.61964963700558",
+        "pH": 5.916054662638588,
+        "Iron": 2.61964963700558,
         "Nitrate": 1.389334381478444,
         "Chloride": 84.5131075606675,
-        "Lead": 0.337545563272474,
-        "Zinc": "0.9780321533559888",
-        "Turbidity": "0.2486518821452759",
-        "Fluoride": "0.6913182398790103",
-        "Copper": "0.96396750718677",
-        "Odor": "0.7721724045887509",
-        "Sulfate": "0.81345037627716",
-        "Chlorine": "0.966623674745241",
-        "Manganese": "0.011527500694864",
-        "Total Dissolved Solids": "0.36944624557778"
+        "Lead": 3.337545563272474,
+        "Zinc": 1.9780321533559888,
+        "Turbidity": 0.2486518821452759,
+        "Fluoride": 1.6913182398790103,
+        "Copper": 2.96396750718677,
+        "Odor": 0.7721724045887509,
+        "Sulfate": 83.81345037627716,
+        "Conductivity": 150.0865646653724,
+        "Chlorine": 5.966623674745241,
+        "Manganese": 0.011527500694864,
+        "Total Dissolved Solids": 52.36944624557778,
+        "Water Temperature": 10.404331788327024,
+        "Air Temperature": 42.50801106306919,
+        "Day": 12.0,
+        "Time of Day": 23.0,
+        "Color": "Faint Yellow",
+        "Source": "Spring",
+        "Month": "January"
     },
-    "model_version": "v1",
+    "model_version": "v3.1",
     "mode": "predict",
     "get_probability": true,
     "get_feature_importance": true,
-    "get_model_features": true
+    "get_model_features": true,
+    "skip_db_update": false
 }
 ```
 
@@ -98,11 +140,11 @@ The response include the extracted features in JSON format.
 
 ```
 {
-    "prediction": "safe to consume",
-    "prediction_class": 0,
+    "prediction": "unsafe to consume",
+    "predicted_class": 1,
     "probability": {
-        "0": 0.5384615384615384,
-        "1": 0.46153846153846156
+        "0": 0.137430036277229,
+        "1": 0.8625699637227712
     },
     "feature_columns": [
         "pH",
@@ -116,25 +158,47 @@ The response include the extracted features in JSON format.
         "Copper",
         "Odor",
         "Sulfate",
+        "Conductivity",
         "Chlorine",
         "Manganese",
-        "Total Dissolved Solids"
+        "Total Dissolved Solids",
+        "Water Temperature",
+        "Air Temperature",
+        "Day",
+        "Time of Day",
+        "clr_Colorless",
+        "clr_Faint Yellow",
+        "clr_Light Yellow",
+        "clr_Near Colorless",
+        "clr_Yellow"
     ],
     "feature_importance": [
-        0.1315288343051377,
-        0.05904120131425621,
-        0.06170211245003547,
-        0.1086330101463574,
-        0.005545970740731968,
-        0.031131607589077844,
-        0.09375709765287078,
-        0.05967779427995336,
-        0.08468771243873978,
-        0.0849028544693462,
-        0.03929514319469508,
-        0.060234075439392784,
-        0.1428010505057667,
-        0.03706153547363892
-    ]
+        0.12017251721100342,
+        0.04478049911178525,
+        0.049991602509767086,
+        0.10288805321208315,
+        0.0028985012030458405,
+        0.010577532597023298,
+        0.117509626488281,
+        0.03940611510067235,
+        0.09685049859506778,
+        0.09071415904793474,
+        0.02264432579188263,
+        0.0004588714689250585,
+        0.04258370095734564,
+        0.15877773417279717,
+        0.028935966463589962,
+        0.00046330029603573237,
+        0.00048460608389740123,
+        0.0002611789029007828,
+        0.00025087763724318703,
+        0.007557150563553395,
+        0.002085750572472046,
+        0.006163260421078578,
+        0.005956294689692912,
+        0.04758787690192163
+    ],
+    "response_time": 0.0855,
+    "log_source": "azure"
 }
 ```
