@@ -1,0 +1,308 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sandy Inspires - Intel oneAPI Hackathon 2023</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/9e7e33d92a.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        min-height: 75rem;
+        padding-top: 100px;
+      }
+      .navbar-brand {
+        font-size: 2rem;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/bluebird/3.5.0/bluebird.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>
+
+    <!-- Added for toast message -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <body style="background-color: #c4d7ec">
+    <div id="app">
+      <nav
+        class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"
+        style="background-color: #3c91e6 !important"
+      >
+        <div class="container">
+          <img
+            src="https://santhoshinteloneapi942f.blob.core.windows.net/images/intel%20oneapi%20logo.png"
+            alt="Intel"
+            style="height: 50"
+          />
+          <span class="navbar-brand"
+            >Predict the quality of freshwater - Santhosh</span
+          >
+          <span class="navbar-brand">Let's make life better</span>
+        </div>
+      </nav>
+
+      <div class="container" id="featureContainer">
+        <h2>Feature Values</h2>
+        <p>(Scroll down to see the predict button)</p>
+      </div>
+
+      <div class="container" id="resultContainer"></div>
+    </div>
+
+    <!-- Toast Message -->
+    <div
+      aria-live="assertive"
+      role="alert"
+      aria-atomic="true"
+      style="position: relative; min-height: 90px"
+    >
+      <div
+        class="toast"
+        style="position: absolute; top: 0; right: 0"
+        data-autohide="false"
+        aria-live="assertive"
+      >
+        <div class="toast-header">
+          <strong class="mr-auto">Azure Functions API</strong>
+          <small class="text-muted ml-4">1 seconds ago</small>
+          <button
+            type="button"
+            class="ml-2 mb-1 close"
+            data-dismiss="toast"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">Prediction Made successfully!!!</div>
+      </div>
+    </div>
+
+    <footer
+      class="bg-light text-center"
+      style="position: absolute; height: 250px; width: 100%; line-height: 60px"
+    >
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <h2>If you want to connect</h2>
+        <!-- Section: Social media -->
+        <section class="mb-4">
+          <!-- Linkedin -->
+          <a
+            class="m-2"
+            style="color: #0082ca; !important font-size:250%"
+            href="https://www.linkedin.com/in/santhosh-kumard"
+            target="_blank"
+            role="button"
+          >
+            <i
+              class="fa fa-linkedin-square"
+              aria-hidden="true"
+              style="font-size: 250%"
+            ></i>
+          </a>
+          <!-- Github -->
+          <a
+            class="m-2"
+            style="color: #333333; !important font-size:250%"
+            href="https://github.com/Santhoshkumard11/fresh-water-classifier"
+            target="_blank"
+            role="button"
+            ><i
+              class="fa fa-github-square"
+              aria-hidden="true"
+              style="font-size: 250%"
+            ></i>
+          </a>
+
+          <!-- Medium -->
+          <a
+            class="m-2"
+            style="color: #3b5998; !important"
+            href="https://santhoshkdhana.medium.com/"
+            target="_blank"
+            role="button"
+            ><i
+              class="fa fa-medium"
+              aria-hidden="true"
+              style="font-size: 250%"
+            ></i
+          ></a>
+
+          <!-- Twitter -->
+          <a
+            class="m-2"
+            style="color: #55acee; !important"
+            href="https://twitter.com/sandy_inspires"
+            target="_blank"
+            role="button"
+            ><i class="fa fa-twitter-square" style="font-size: 250%"></i
+          ></a>
+
+          <!-- Instagram -->
+          <a
+            class="m-2"
+            style="color: #ac2bac; !important"
+            href="https://www.instagram.com/sandy_inspires"
+            target="_blank"
+            role="button"
+            ><i class="fa fa-instagram" style="font-size: 250%"></i
+          ></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="" style="background-color: #c0d7ee">
+        <span class="text-dark"> © 2023 Copyright </span>
+        <a class="text-dark" href="https://github.com/Santhoshkumard11"
+          >Sandy Inspires</a
+        >
+      </div>
+    </footer>
+
+    <script type="application/javascript">
+      var featuresDict = {
+        pH: 5.916054662638588,
+        Iron: 2.61964963700558,
+        Nitrate: 1.389334381478444,
+        Chloride: 84.5131075606675,
+        Lead: 3.337545563272474,
+        Zinc: 1.9780321533559888,
+        Turbidity: 0.2486518821452759,
+        Fluoride: 1.6913182398790103,
+        Copper: 2.96396750718677,
+        Odor: 0.7721724045887509,
+        Sulfate: 83.81345037627716,
+        Conductivity: 150.0865646653724,
+        Chlorine: 5.966623674745241,
+        Manganese: 0.011527500694864,
+        "Total Dissolved Solids": 52.36944624557778,
+        "Water Temperature": 10.404331788327024,
+        "Air Temperature": 42.50801106306919,
+        Day: 12.0,
+        "Time of Day": 23.0,
+        Color: "Faint Yellow",
+        Source: "Spring",
+        Month: "January",
+      };
+
+      // yet to be implemented
+      function validateFields() {}
+
+      // fetch the user input fields
+      function fetchFeatureValues() {
+        var body = {};
+
+        // iterate over the features dict
+        for (var item in featuresDict) {
+          let new_item = item
+            .replace(" ", "_")
+            .replace(" ", "_")
+            .replace(" ", "_");
+          body[item] = $(`#${new_item}`).val();
+        }
+
+        return {
+          features_dict: body,
+          model_version: "v3.1",
+          mode: "predict",
+          get_probability: true,
+          skip_db_update: true,
+        };
+      }
+
+      // construct html tags with the results from the API response
+      function handleModelResponse(data) {
+        var resultTemplate = `
+        <br>
+        <p>Prediction: ${data.prediction}</p>
+        <p>Predicted Class: ${data.predicted_class}</p>
+        <p>Probability: </p>
+        <p>0: ${data.probability["0"]}</p>
+        <p>1: ${data.probability["1"]}</p>
+        <p>Response Time: ${data.response_time}</p>
+        <p>(this is the inference time, does not include network latency)</p>
+        `;
+
+        document.getElementById("resultContainer").innerHTML = resultTemplate;
+
+        $(".toast").toast("show");
+      }
+
+      function startPrediction() {
+        console.log("predict button clicked!!");
+
+        // set this to show the user that the prediction is happening
+        document.getElementById(
+          "resultContainer"
+        ).innerHTML = `<p>Making prediction...</p>`;
+
+        var data = fetchFeatureValues();
+
+        // send the post request to the Azure Functions endpoint
+        fetch(
+          "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+          {
+            method: "POST",
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            handleModelResponse(data);
+          });
+      }
+
+      $(document).ready(function () {
+        // set these values once the document loads
+        for (var item in featuresDict) {
+          var value = featuresDict[item];
+          let new_item = item
+            .replace(" ", "_")
+            .replace(" ", "_")
+            .replace(" ", "_");
+
+          let containerTemplate = `
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default"
+                  >${item}</span
+                >
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="inputGroup-sizing-default"
+                id="${new_item}"
+                placeholder="Enter the ${item} value"
+                value="${value}"
+              />
+            </div>`;
+
+          $("#featureContainer").append(containerTemplate);
+        }
+
+        $("#featureContainer").append(
+          `<button type="button" class="btn btn-primary" id="predictButton" onClick="startPrediction()">Predict</button>`
+        );
+      });
+    </script>
+  </body>
+</html>

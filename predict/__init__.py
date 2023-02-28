@@ -2,6 +2,7 @@ import logging
 import azure.functions as func
 from time import time
 import json
+import mimetypes
 from helpers.predictor import Predictor
 from helpers.mysql_client import MySQLClient
 
@@ -17,10 +18,13 @@ def mysql_handler(req_body: dict, response: dict, query_type: str):
 
     mysql_client = MySQLClient()
 
-    if query_type == "ml_model_log":
-        mysql_client.add_ml_logs(req_body, response)
-    if query_type == "misclassified":
-        mysql_client.add_misclassified(req_body, response)
+    try:
+        if query_type == "ml_model_log":
+            mysql_client.add_ml_logs(req_body, response)
+        if query_type == "misclassified":
+            mysql_client.add_misclassified(req_body, response)
+    except Exception as e:
+        logging.error(f"Error in updating db - {e}")
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -89,11 +93,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 )
 
         else:
-            end_time = round(time() - start_time, 4)
-            return func.HttpResponse(
-                f"Endpoint hit! Please send a POST request with all the required columns to predict. Response Time - {end_time}",
-                status_code=200,
-            )
+            filename = "index.html"
+            logging.info("showing index page!!")
+            with open("predict/index.html", "rb") as f:
+                mimetype = mimetypes.guess_type(filename)
+                return func.HttpResponse(
+                    f.read(), mimetype=mimetype[0], status_code=200
+                )
 
     except Exception as e:
         logging.exception(f"Here is the error: \n{e}")
