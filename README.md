@@ -10,14 +10,19 @@ Deploying a binary classification model on Azure Function to do on-demand predic
 
 ## YouTube Demo Video 📺📺
 
-### [Click here to watch the demo](https://www.youtube.com/watch?v=hG8o02FAzAY&ab_channel=LateNightCodewithSanthosh)
+### [Click here to watch the demo](https://www.youtube.com/watch?v=SSBYHy-e3-I&ab_channel=LateNightCodewithSanthosh)
 
 ## Azure Functions API endpoints
 
 Download the Postman API Collection which has sample API endpoints and JSON request body
 
-Web UI URL - [https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict
-](https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict)
+
+Web UI URL - [https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict
+](https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict)
+
+
+Fallback URL - [https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict](https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict)
+
 
 `Note: The first time you try to access this endpoint, it might be slow but once it loads up then you can hit the endpoint frequently and get a quick response around 300 to 750 ms and inference time of less than 50 ms`
 
@@ -113,26 +118,26 @@ Sample request body for prediction:
 ```
 {
     "features_dict": {
-        "pH": 5.916054662638588,
-        "Iron": 2.61964963700558,
-        "Nitrate": 1.389334381478444,
-        "Chloride": 84.5131075606675,
-        "Lead": 3.337545563272474,
-        "Zinc": 1.9780321533559888,
-        "Turbidity": 0.2486518821452759,
-        "Fluoride": 1.6913182398790103,
-        "Copper": 2.96396750718677,
-        "Odor": 0.7721724045887509,
-        "Sulfate": 83.81345037627716,
-        "Conductivity": 150.0865646653724,
-        "Chlorine": 5.966623674745241,
-        "Manganese": 0.011527500694864,
-        "Total Dissolved Solids": 52.36944624557778,
-        "Water Temperature": 10.404331788327024,
-        "Air Temperature": 42.50801106306919,
-        "Day": 12.0,
-        "Time of Day": 23.0,
-        "Color": "Faint Yellow",
+        "pH": 7.66277305,
+        "Iron": 0.00050368,
+        "Nitrate": 8.314856791,
+        "Chloride": 125.4349899,
+        "Lead": 4.42E-53,
+        "Zinc": 0.177661982,
+        "Turbidity": 0.960556746,
+        "Fluoride": 0.3996372,
+        "Copper": 1.400970436,
+        "Odor": 1.120276899,
+        "Sulfate": 162.3643478,
+        "Conductivity": 456.736456,
+        "Chlorine": 3.487772248,
+        "Manganese": 5.38E-07,
+        "Total Dissolved Solids": 26.56233485,
+        "Water Temperature": 25.03565147,
+        "Air Temperature": 83.05006295,
+        "Day": 5,
+        "Time of Day": 19,
+        "Color": "Near Colorless",
         "Source": "Spring",
         "Month": "January"
     },

@@ -58,7 +58,7 @@
 
       <div class="container" id="featureContainer">
         <h2>Feature Values</h2>
-        <p>(Scroll down to see the predict button)</p>
+        <p><a href="#predictButton">Click here to goto the predict button</a></p>
       </div>
 
       <div class="container" id="resultContainer"></div>
@@ -179,25 +179,25 @@
 
     <script type="application/javascript">
       var featuresDict = {
-        pH: 5.916054662638588,
-        Iron: 2.61964963700558,
-        Nitrate: 1.389334381478444,
-        Chloride: 84.5131075606675,
-        Lead: 3.337545563272474,
-        Zinc: 1.9780321533559888,
-        Turbidity: 0.2486518821452759,
-        Fluoride: 1.6913182398790103,
-        Copper: 2.96396750718677,
-        Odor: 0.7721724045887509,
-        Sulfate: 83.81345037627716,
-        Conductivity: 150.0865646653724,
-        Chlorine: 5.966623674745241,
-        Manganese: 0.011527500694864,
-        "Total Dissolved Solids": 52.36944624557778,
-        "Water Temperature": 10.404331788327024,
-        "Air Temperature": 42.50801106306919,
-        Day: 12.0,
-        "Time of Day": 23.0,
+        pH: 7.66277305,
+        Iron: 0.00050368,
+        Nitrate: 8.314856791,
+        Chloride: 125.4349899,
+        Lead: 4.42e-53,
+        Zinc: 0.177661982,
+        Turbidity: 0.960556746,
+        Fluoride: 0.3996372,
+        Copper: 1.400970436,
+        Odor: 1.120276899,
+        Sulfate: 162.3643478,
+        Conductivity: 456.736456,
+        Chlorine: 3.487772248,
+        Manganese: 5.38e-7,
+        "Total Dissolved Solids": 26.56233485,
+        "Water Temperature": 25.03565147,
+        "Air Temperature": 83.05006295,
+        Day: 5,
+        "Time of Day": 19,
         Color: "Faint Yellow",
         Source: "Spring",
         Month: "January",
@@ -237,8 +237,7 @@
         <p>Probability: </p>
         <p>0: ${data.probability["0"]}</p>
         <p>1: ${data.probability["1"]}</p>
-        <p>Response Time: ${data.response_time}</p>
-        <p>(this is the inference time, does not include network latency)</p>
+        <p>Response Time (in seconds): ${data.response_time}</p>
         `;
 
         document.getElementById("resultContainer").innerHTML = resultTemplate;
@@ -259,6 +258,8 @@
         // send the post request to the Azure Functions endpoint
         fetch(
           "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+          // "https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict",
+          // "http://localhost:7071/api/predict",
           {
             method: "POST",
             body: JSON.stringify(data),

@@ -21,9 +21,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"raw": "https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict",
 					"host": [
-						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+						"https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net"
 					],
 					"path": [
 						"api",
@@ -48,9 +48,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"raw": "https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict",
 					"host": [
-						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+						"https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net"
 					],
 					"path": [
 						"api",
@@ -75,9 +75,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"raw": "https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict",
 					"host": [
-						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+						"https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net"
 					],
 					"path": [
 						"api",
@@ -102,9 +102,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"raw": "https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict",
 					"host": [
-						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+						"https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net"
 					],
 					"path": [
 						"api",
@@ -129,9 +129,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net/api/predict",
+					"raw": "https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net/api/predict",
 					"host": [
-						"https://sandy-intel-one-api-fresh-water-classifier.azurewebsites.net"
+						"https://sandy-inspires-intel-one-api-model-endpoints.azurewebsites.net"
 					],
 					"path": [
 						"api",
